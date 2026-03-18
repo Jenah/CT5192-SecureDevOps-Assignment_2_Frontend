@@ -40,10 +40,10 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     - name: OWASP ZAP Baseline Scan
-      uses: docker://owasp/zap2docker-weekly
+      uses: zaproxy/action-baseline@v0.7.0
       with:
-        entrypoint: /bin/sh
-        args: -c "cd frontend-react && zap-baseline.py -t http://localhost:3000 -r zap-report.html"
+        target: 'http://localhost:3000'
+        report: 'frontend-react/zap-report.html'
 
     - name: Upload ZAP Report
       uses: actions/upload-artifact@v4
