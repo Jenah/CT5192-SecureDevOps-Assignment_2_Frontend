@@ -31,7 +31,7 @@ jobs:
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v2
       with:
-        projectBaseDir: backend-flask
+        projectBaseDir: frontend-flask
         args: >
           -Dsonar.token=7acbc43749f3a41de8b1402f5960573bc29889f8 
           -Dsonar.projectKey=Jenah_CT5192-SecureDevOps-Assignment_2_frontend 
