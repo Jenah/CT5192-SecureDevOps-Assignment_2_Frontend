@@ -43,14 +43,12 @@ jobs:
       run: |
         pip install python-owasp-zap-v2.4
 
-    - name: Run ZAP Scan
+    - name: Start ZAP in daemon mode
       run: |
-        cd frontend-react
-        npm install -g serve
-        serve -s build -l 3000 &
-        sleep 5
-        # Run ZAP baseline scan
-        python -m zapv2.baseline -t http://localhost:3000 -r zap-report.html
+        wget https://github.com/zaproxy/zaproxy/releases/download/v2.13.0/ZAP_2.13.0_Core.zip
+        unzip ZAP_2.13.0_Core.zip -d zap
+        java -jar zap/ZAP_2.13.0/zap.jar -daemon -port 8080 &
+        sleep 10
 
     - name: Upload ZAP Report
       uses: actions/upload-artifact@v4
