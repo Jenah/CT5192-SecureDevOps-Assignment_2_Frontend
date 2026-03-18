@@ -40,7 +40,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     - name: OWASP ZAP Baseline Scan
-      uses: docker://owasp/zap2docker-stable
+      uses: docker://owasp/zap2docker-weekly
       with:
         entrypoint: /bin/sh
         args: -c "cd frontend-react && zap-baseline.py -t http://localhost:3000 -r zap-report.html"
