@@ -46,7 +46,7 @@ jobs:
         args: -c "cd frontend-react && zap-baseline.py -t http://localhost:3000 -r zap-report.html"
 
     - name: Upload ZAP Report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: zap-report
         path: frontend-react/zap-report.html
