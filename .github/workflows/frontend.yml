@@ -39,4 +39,16 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+    - name: OWASP ZAP Baseline Scan
+      uses: docker://owasp/zap2docker-stable
+      with:
+        entrypoint: /bin/sh
+        args: -c "cd frontend-react && zap-baseline.py -t http://localhost:3000 -r zap-report.html"
+
+    - name: Upload ZAP Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: zap-report
+        path: frontend-react/zap-report.html
+
 
