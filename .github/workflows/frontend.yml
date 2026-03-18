@@ -34,7 +34,7 @@ jobs:
         projectBaseDir: backend-flask
         args: >
           -Dsonar.token=7acbc43749f3a41de8b1402f5960573bc29889f8 
-          -Dsonar.projectKey=Jenah_CT5192-SecureDevOps-Assignment_2_Backend 
+          -Dsonar.projectKey=Jenah_CT5192-SecureDevOps-Assignment_2_frontend 
           -Dsonar.organization=jenah
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
