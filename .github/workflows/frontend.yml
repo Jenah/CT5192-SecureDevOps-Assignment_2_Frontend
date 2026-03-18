@@ -39,6 +39,11 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+    - name: Install ZAP CLI
+      run: |
+          sudo apt update
+          sudo apt install -y zaproxy
+
     - name: OWASP ZAP Baseline Scan
       uses: zaproxy/action-baseline@v0.7.0
       with:
