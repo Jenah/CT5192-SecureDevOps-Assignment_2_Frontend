@@ -31,7 +31,6 @@ jobs:
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v2
       with:
-        projectBaseDir: frontend-react
         args: >
           -Dsonar.token=7a24cfb1cb777452155d82860889060632ea548d
           -Dsonar.projectKey=Jenah_CT5192-SecureDevOps-Assignment_2_frontend 
