@@ -39,21 +39,56 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-    - name: Install ZAP CLI
+    - name: Download ZAP
       run: |
-        pip install python-owasp-zap-v2.4
+        wget https://github.com/zaproxy/zaproxy/releases/latest/download/ZAP_WEEKLY_DISTRIBUTION.zip -O zap.zip
+        unzip zap.zip -d zap
 
-    - name: Start ZAP in daemon mode
+    # Start ZAP in daemon mode
+    - name: Start ZAP
       run: |
-        wget https://github.com/zaproxy/zaproxy/releases/download/v2.13.0/ZAP_2.13.0_Core.zip
-        unzip ZAP_2.13.0_Core.zip -d zap
-        java -jar zap/ZAP_2.13.0/zap.jar -daemon -port 8080 &
-        sleep 10
+        java -jar zap/ZAP_2.x/zap.jar -daemon -port 8080 &
+        sleep 15
 
-    - name: Upload ZAP Report
+    # Install Python client for ZAP
+    - name: Install Python ZAP API
+      run: pip install python-owasp-zap-v2.4
+
+    # Run scan via Python API
+    - name: Run ZAP Scan
+      run: |
+        python3 << 'EOF'
+        import time
+        from zapv2 import ZAPv2
+        
+        target = 'http://localhost:3000'
+        zap = ZAPv2()
+        
+        print("Accessing target:", target)
+        zap.urlopen(target)
+        time.sleep(2)
+        
+        print("Spidering target...")
+        zap.spider.scan(target)
+        time.sleep(10)
+        
+        print("Running active scan...")
+        zap.ascan.scan(target)
+        time.sleep(10)
+        
+        print("Writing reports...")
+        with open("frontend-react/zap-report.xml","w") as f:
+            f.write(zap.core.xmlreport())
+        with open("frontend-react/zap-report.html","w") as f:
+            f.write(zap.core.htmlreport())
+        EOF
+
+    # Upload ZAP reports
+    - name: Upload ZAP Reports
       uses: actions/upload-artifact@v4
       with:
-        name: zap-report
-        path: frontend-react/zap-report.html
-
+        name: zap-reports
+        path: |
+          frontend-react/zap-report.xml
+          frontend-react/zap-report.html
 
